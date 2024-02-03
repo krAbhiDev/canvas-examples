@@ -6,6 +6,7 @@ import MathEval from "./MathEval"
 import Triangulation from "./Triangulation"
 import ObjectEditor from "./ObjectEditor"
 import VectorApp from "../vector-editor/VectorApp"
+import SkiaCanvasKit from "./SkiaCanvasKit"
 
 type PageItem = {
     name: string
@@ -19,6 +20,7 @@ const pages: PageItem[] = [
     { name: "triangulation", component: Triangulation },
     { name: "object-editor", component: ObjectEditor },
     { name: "vector-app", component: VectorApp },
+    { name: "skia-canvas", component: SkiaCanvasKit },
 
 ]
 
