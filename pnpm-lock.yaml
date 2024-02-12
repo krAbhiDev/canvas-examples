@@ -34,9 +34,6 @@ devDependencies:
   '@typescript-eslint/parser':
     specifier: ^6.13.1
     version: 6.18.0(eslint@8.56.0)(typescript@5.3.3)
-  '@vitejs/plugin-react-swc':
-    specifier: ^3.5.0
-    version: 3.5.0(vite@4.5.1)
   autoprefixer:
     specifier: ^10.4.16
     version: 10.4.16(postcss@8.4.33)
@@ -64,9 +61,6 @@ devDependencies:
   vite:
     specifier: ^4.5.1
     version: 4.5.1
-  vite-plugin-swc-transform:
-    specifier: ^0.2.0
-    version: 0.2.0(vite@4.5.1)
 
 packages:
 
@@ -410,147 +404,6 @@ packages:
     engines: {node: '>=14.0.0'}
     dev: true
 
-  /@rollup/pluginutils@5.1.0:
-    resolution: {integrity: sha512-XTIWOPPcpvyKI6L1NHo0lFlCyznUEyPmPY1mc3KpPVDYulHSTvyeLNVW00QTLIAFNhR3kYnJTQHeGqU4M3n09g==}
-    engines: {node: '>=14.0.0'}
-    peerDependencies:
-      rollup: ^1.20.0||^2.0.0||^3.0.0||^4.0.0
-    peerDependenciesMeta:
-      rollup:
-        optional: true
-    dependencies:
-      '@types/estree': 1.0.5
-      estree-walker: 2.0.2
-      picomatch: 2.3.1
-    dev: true
-
-  /@swc/core-darwin-arm64@1.3.102:
-    resolution: {integrity: sha512-CJDxA5Wd2cUMULj3bjx4GEoiYyyiyL8oIOu4Nhrs9X+tlg8DnkCm4nI57RJGP8Mf6BaXPIJkHX8yjcefK2RlDA==}
-    engines: {node: '>=10'}
-    cpu: [arm64]
-    os: [darwin]
-    requiresBuild: true
-    dev: true
-    optional: true
-
-  /@swc/core-darwin-x64@1.3.102:
-    resolution: {integrity: sha512-X5akDkHwk6oAer49oER0qZMjNMkLH3IOZaV1m98uXIasAGyjo5WH1MKPeMLY1sY6V6TrufzwiSwD4ds571ytcg==}
-    engines: {node: '>=10'}
-    cpu: [x64]
-    os: [darwin]
-    requiresBuild: true
-    dev: true
-    optional: true
-
-  /@swc/core-linux-arm-gnueabihf@1.3.102:
-    resolution: {integrity: sha512-kJH3XtZP9YQdjq/wYVBeFuiVQl4HaC4WwRrIxAHwe2OyvrwUI43dpW3LpxSggBnxXcVCXYWf36sTnv8S75o2Gw==}
-    engines: {node: '>=10'}
-    cpu: [arm]
-    os: [linux]
-    requiresBuild: true
-    dev: true
-    optional: true
-
-  /@swc/core-linux-arm64-gnu@1.3.102:
-    resolution: {integrity: sha512-flQP2WDyCgO24WmKA1wjjTx+xfCmavUete2Kp6yrM+631IHLGnr17eu7rYJ/d4EnDBId/ytMyrnWbTVkaVrpbQ==}
-    engines: {node: '>=10'}
-    cpu: [arm64]
-    os: [linux]
-    requiresBuild: true
-    dev: true
-    optional: true
-
-  /@swc/core-linux-arm64-musl@1.3.102:
-    resolution: {integrity: sha512-bQEQSnC44DyoIGLw1+fNXKVGoCHi7eJOHr8BdH0y1ooy9ArskMjwobBFae3GX4T1AfnrTaejyr0FvLYIb0Zkog==}
-    engines: {node: '>=10'}
-    cpu: [arm64]
-    os: [linux]
-    requiresBuild: true
-    dev: true
-    optional: true
-
-  /@swc/core-linux-x64-gnu@1.3.102:
-    resolution: {integrity: sha512-dFvnhpI478svQSxqISMt00MKTDS0e4YtIr+ioZDG/uJ/q+RpcNy3QI2KMm05Fsc8Y0d4krVtvCKWgfUMsJZXAg==}
-    engines: {node: '>=10'}
-    cpu: [x64]
-    os: [linux]
-    requiresBuild: true
-    dev: true
-    optional: true
-
-  /@swc/core-linux-x64-musl@1.3.102:
-    resolution: {integrity: sha512-+a0M3CvjeIRNA/jTCzWEDh2V+mhKGvLreHOL7J97oULZy5yg4gf7h8lQX9J8t9QLbf6fsk+0F8bVH1Ie/PbXjA==}
-    engines: {node: '>=10'}
-    cpu: [x64]
-    os: [linux]
-    requiresBuild: true
-    dev: true
-    optional: true
-
-  /@swc/core-win32-arm64-msvc@1.3.102:
-    resolution: {integrity: sha512-w76JWLjkZNOfkB25nqdWUNCbt0zJ41CnWrJPZ+LxEai3zAnb2YtgB/cCIrwxDebRuMgE9EJXRj7gDDaTEAMOOQ==}
-    engines: {node: '>=10'}
-    cpu: [arm64]
-    os: [win32]
-    requiresBuild: true
-    dev: true
-    optional: true
-
-  /@swc/core-win32-ia32-msvc@1.3.102:
-    resolution: {integrity: sha512-vlDb09HiGqKwz+2cxDS9T5/461ipUQBplvuhW+cCbzzGuPq8lll2xeyZU0N1E4Sz3MVdSPx1tJREuRvlQjrwNg==}
-    engines: {node: '>=10'}
-    cpu: [ia32]
-    os: [win32]
-    requiresBuild: true
-    dev: true
-    optional: true
-
-  /@swc/core-win32-x64-msvc@1.3.102:
-    resolution: {integrity: sha512-E/jfSD7sShllxBwwgDPeXp1UxvIqehj/ShSUqq1pjR/IDRXngcRSXKJK92mJkNFY7suH6BcCWwzrxZgkO7sWmw==}
-    engines: {node: '>=10'}
-    cpu: [x64]
-    os: [win32]
-    requiresBuild: true
-    dev: true
-    optional: true
-
-  /@swc/core@1.3.102:
-    resolution: {integrity: sha512-OAjNLY/f6QWKSDzaM3bk31A+OYHu6cPa9P/rFIx8X5d24tHXUpRiiq6/PYI6SQRjUPlB72GjsjoEU8F+ALadHg==}
-    engines: {node: '>=10'}
-    requiresBuild: true
-    peerDependencies:
-      '@swc/helpers': ^0.5.0
-    peerDependenciesMeta:
-      '@swc/helpers':
-        optional: true
-    dependencies:
-      '@swc/counter': 0.1.2
-      '@swc/types': 0.1.5
-    optionalDependencies:
-      '@swc/core-darwin-arm64': 1.3.102
-      '@swc/core-darwin-x64': 1.3.102
-      '@swc/core-linux-arm-gnueabihf': 1.3.102
-      '@swc/core-linux-arm64-gnu': 1.3.102
-      '@swc/core-linux-arm64-musl': 1.3.102
-      '@swc/core-linux-x64-gnu': 1.3.102
-      '@swc/core-linux-x64-musl': 1.3.102
-      '@swc/core-win32-arm64-msvc': 1.3.102
-      '@swc/core-win32-ia32-msvc': 1.3.102
-      '@swc/core-win32-x64-msvc': 1.3.102
-    dev: true
-
-  /@swc/counter@0.1.2:
-    resolution: {integrity: sha512-9F4ys4C74eSTEUNndnER3VJ15oru2NumfQxS8geE+f3eB5xvfxpWyqE5XlVnxb/R14uoXi6SLbBwwiDSkv+XEw==}
-    dev: true
-
-  /@swc/types@0.1.5:
-    resolution: {integrity: sha512-myfUej5naTBWnqOCc/MdVOLVjXUXtIA+NpDrDBKJtLLg2shUjBu3cZmB/85RyitKc55+lUUyl7oRfLOvkr2hsw==}
-    dev: true
-
-  /@types/estree@1.0.5:
-    resolution: {integrity: sha512-/kYRxGDLWzHOB7q+wtSUQlFrtcdUccpfy+X+9iMBpHK8QLLhx2wIPYuS5DYtR9Wa/YlZAbIovy7qVdB1Aq6Lyw==}
-    dev: true
-
   /@types/json-schema@7.0.15:
     resolution: {integrity: sha512-5+fP8P8MFNC+AyZCDxrB2pkZFPGzqQWUzpSeuuVLvm8VMcorNYavBqoFcxK8bQz4Qsbn4oUEEem4wDLfcysGHA==}
     dev: true
@@ -715,17 +568,6 @@ packages:
 
   /@ungap/structured-clone@1.2.0:
     resolution: {integrity: sha512-zuVdFrMJiuCDQUMCzQaD6KL28MjnqqN8XnAqiEq9PNm/hCPTSGfrXCOfwj1ow4LFb/tNymJPwsNbVePc1xFqrQ==}
-    dev: true
-
-  /@vitejs/plugin-react-swc@3.5.0(vite@4.5.1):
-    resolution: {integrity: sha512-1PrOvAaDpqlCV+Up8RkAh9qaiUjoDUcjtttyhXDKw53XA6Ve16SOp6cCOpRs8Dj8DqUQs6eTW5YkLcLJjrXAig==}
-    peerDependencies:
-      vite: ^4 || ^5
-    dependencies:
-      '@swc/core': 1.3.102
-      vite: 4.5.1
-    transitivePeerDependencies:
-      - '@swc/helpers'
     dev: true
 
   /@webgpu/types@0.1.21:
@@ -1137,10 +979,6 @@ packages:
   /estraverse@5.3.0:
     resolution: {integrity: sha512-MMdARuVEQziNTeJD8DgMqmhwR11BRQ/cBP+pLtYdSTnf3MIO8fFeiINEbX36ZdNlfU/7A9f3gUw49B3oQsvwBA==}
     engines: {node: '>=4.0'}
-    dev: true
-
-  /estree-walker@2.0.2:
-    resolution: {integrity: sha512-Rfkk/Mp/DL7JVje3u18FxFujQlTNR2q6QfMSMB7AvCBx91NGj/ba3kCfza0f6dVDbw7YlRf/nDrn7pQrCCyQ/w==}
     dev: true
 
   /esutils@2.0.3:
@@ -2037,22 +1875,6 @@ packages:
 
   /util-deprecate@1.0.2:
     resolution: {integrity: sha512-EPD5q1uXyFxJpCrLnCc1nHnq3gOa6DZBocAIiI2TaSCA7VCJ1UJDMagCzIkXNsUYfD1daK//LTEQ8xiIbrHtcw==}
-    dev: true
-
-  /vite-plugin-swc-transform@0.2.0(vite@4.5.1):
-    resolution: {integrity: sha512-8s3vOcvlFC0+vzlyMbDzHBaVtxfFmIG+KEv4F+n3TcY3+J20o5jcyjVRJPV761IDmNXMn42eO9g+TOqH06C30w==}
-    peerDependencies:
-      vite: ^4
-    peerDependenciesMeta:
-      vite:
-        optional: true
-    dependencies:
-      '@rollup/pluginutils': 5.1.0
-      '@swc/core': 1.3.102
-      vite: 4.5.1
-    transitivePeerDependencies:
-      - '@swc/helpers'
-      - rollup
     dev: true
 
   /vite@4.5.1:
