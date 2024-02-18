@@ -47,6 +47,13 @@ export function _VectorApp() {
         order,
       });
     });
+
+    //clear
+    return ()=>{
+      if(mainRef.current){
+        mainRef.current.innerHTML = "";
+      }
+    }
   }, []);
 
   return (
