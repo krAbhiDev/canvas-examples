@@ -82,6 +82,9 @@ export default class Point {
   inverse() {
     return this.scale(-1);
   }
+  toString() {
+    return `x: ${this.x}, y: ${this.y}`;
+  }
 }
 
 

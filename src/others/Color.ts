@@ -1,6 +1,7 @@
 import { toInt } from "./utils";
 
 export class Color {
+  colorString = "";
   constructor(public r = 0, public g = 0, public b = 0, public a = 255) {}
   // Create a Color instance from a hexadecimal color string
   public static fromHex(hex: string): Color {
@@ -14,9 +15,15 @@ export class Color {
 
     return new Color(r, g, b, a);
   }
+   public static fromString(colorString: string): Color {
+    const color = new Color();
+    color.colorString = colorString;
+    return color;
+  }
 
   //return color in canvas color format
   public toString(): string {
+    if (this.colorString) return this.colorString;
     return `rgba(${this.r},${this.g},${this.b},${this.a})`;
   }
   // static random:Color
@@ -25,7 +32,7 @@ export class Color {
       toInt(Math.random() * 255),
       toInt(Math.random() * 255),
       toInt(Math.random() * 255),
-      (alpha || 255)/255
+      (alpha || 255) / 255
     );
   }
 }
