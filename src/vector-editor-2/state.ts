@@ -14,7 +14,7 @@ export interface EditorState {
   removeShape: (shape: Shape) => void;
   clearShapes: () => void;
   removeShapeAt: (index: number) => void;
-  updateShape: (shape: Shape) => void;
+  updateShape: (id: number, callback: (shape: Shape) => void) => void;
   getShapeById: (id?: number) => Shape | undefined;
   getSelectedShape: () => Shape | undefined;
 }
@@ -49,12 +49,11 @@ export const useEditorStore = create<EditorState>()(
           if (state.selectedShapeId === state.shapes[index].id)
             state.selectedShapeId = undefined;
         }),
-      updateShape: (shape) => {
+      updateShape: (id, callback) => {
         set((state) => {
-          const index = state.shapes.findIndex((s) => s.id === shape.id);
-          if (index === -1) return;
-          state.shapes[index] = shape;
-          
+          const shape = state.shapes.find((s) => s.id === id);
+          if (!shape) return;
+          callback(shape as Shape);
         });
       },
       getShapeById: (id?: number) => get().shapes.find((s) => s.id === id),
@@ -74,6 +73,9 @@ export const useEditorStore = create<EditorState>()(
     // newShape.center.x++;
     // useEditorStore.getState().updateShape(newShape);
     // console.log("shape.center.x", newShape.center.x);
+    // useEditorStore.getState().updateShape(shape.id, (shape) => {
+    //   shape.center.x++;
+    // });
   }, 100);
 }
 {

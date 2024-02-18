@@ -1,6 +1,7 @@
 import { deg2rad, rad2deg } from "./utils";
-
+import { immerable, produce } from "immer";
 export default class Point {
+  [immerable] = true;
   constructor(public x: number = 0, public y: number = 0) {}
   set(x: number, y: number) {
     this.x = x;
