@@ -11,7 +11,7 @@ export interface EditorState {
   selectedShapeId?: number;
   setSelectedShapeId: (id?: number) => void;
   addShape: (shape: Shape) => void;
-  removeShape: (shape: Shape) => void;
+  removeShape: (id: number) => void;
   clearShapes: () => void;
   removeShapeAt: (index: number) => void;
   updateShape: (id: number, callback: (shape: Shape) => void) => void;
@@ -29,12 +29,12 @@ export const useEditorStore = create<EditorState>()(
         set((state) => {
           state.shapes.push(shape);
         }),
-      removeShape: (shape) =>
+      removeShape: (id) =>
         set((state) => {
-          const index = state.shapes.findIndex((s) => s.id === shape.id);
+          const index = state.shapes.findIndex((s) => s.id === id);
           if (index === -1) return;
           state.shapes.splice(index, 1);
-          if (state.selectedShapeId === shape.id)
+          if (state.selectedShapeId === id)
             state.selectedShapeId = undefined;
         }),
       clearShapes: () => {
@@ -86,20 +86,24 @@ export const useEditorStore = create<EditorState>()(
   useEditorStore.getState().addShape(shape);
 }
 
-// setInterval(() => {
-//   const isEven = useEditorStore.getState().shapes.length % 2 === 0;
-//   if (isEven) {
-//     const shape = new CircleShape();
-//     shape.center.set(randomRange(0, 700), randomRange(0, 300));
-//     shape.radius = 50;
-//     shape.color = Color.random();
-//     useEditorStore.getState().addShape(shape);
-//   } else {
-//     const shape = new RectShape();
-//     shape.center.set(randomRange(0, 700), randomRange(0, 300));
-//     shape.width = 50;
-//     shape.height = 50;
-//     shape.color = Color.random();
-//     useEditorStore.getState().addShape(shape);
-//   }
-// }, 1000);
+// setTimer(() => {
+ 
+// }, 10,0,500);
+let i = 0;
+for (let i = 0; i < 2000; i++) {
+  const isEven = useEditorStore.getState().shapes.length % 2 === 0;
+  if (isEven) {
+    const shape = new CircleShape();
+    shape.center.set(randomRange(0, 700), randomRange(0, 300));
+    shape.radius = 50;
+    shape.color = Color.random();
+    useEditorStore.getState().addShape(shape);
+  } else {
+    const shape = new RectShape();
+    shape.center.set(randomRange(0, 700), randomRange(0, 300));
+    shape.width = 50;
+    shape.height = 50;
+    shape.color = Color.random();
+    useEditorStore.getState().addShape(shape);
+  }
+}

@@ -1,6 +1,8 @@
 import { toInt } from "./utils";
+import { immerable, produce } from "immer";
 
 export class Color {
+  [immerable] = true;
   colorString = "";
   constructor(public r = 0, public g = 0, public b = 0, public a = 255) {}
   // Create a Color instance from a hexadecimal color string
@@ -15,7 +17,7 @@ export class Color {
 
     return new Color(r, g, b, a);
   }
-   public static fromString(colorString: string): Color {
+  public static fromString(colorString: string): Color {
     const color = new Color();
     color.colorString = colorString;
     return color;
@@ -24,7 +26,11 @@ export class Color {
   //return color in canvas color format
   public toString(): string {
     if (this.colorString) return this.colorString;
-    return `rgba(${this.r},${this.g},${this.b},${this.a})`;
+    //to #RRGGBB format
+    return `#${this.r.toString(16).padStart(2, "0")}${this.g
+      .toString(16)
+      .padStart(2, "0")}${this.b.toString(16).padStart(2, "0")}`;
+    // return `rgba(${this.r},${this.g},${this.b},${this.a})`;
   }
   // static random:Color
   public static random(alpha?: number): Color {

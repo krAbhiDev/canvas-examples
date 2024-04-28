@@ -2,7 +2,7 @@
 
 import AutoCanvas from "../components/AutoCanvas";
 import { useEffect, useRef, useState } from "react";
-import InitCanvasKit, { Canvas, CanvasKit } from "canvaskit-wasm";
+import InitCanvasKit, { Canvas, CanvasKit, Font } from "canvaskit-wasm";
 import CanvasKitInit from "canvaskit-wasm";
 import React from "react";
 type Ck = CanvasKit;
@@ -42,7 +42,13 @@ export function useCanvasKit() {
   }
   return canvasKit;
 }
+async function loadGoogleFont(name: string) {
+  var cdn = "https://storage.googleapis.com/skia-cdn/misc/";
+  var fontData = await fetch(cdn + name);
+  return fontData.arrayBuffer();
+}
 
+class ResourceManger {}
 function SkiaCanvas() {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const canvasKit = useCanvasKit();
@@ -55,9 +61,10 @@ function SkiaCanvas() {
     paint.setColor(canvasKit.Color(0, 0, 0, 1));
     canvas.drawRect(canvasKit.LTRBRect(0, 0, 100, 100), paint);
     paint.delete();
-    skiaBasicDrawing(canvas, canvasKit);
-    surface!.flush();
-    surface!.delete();
+    skiaBasicDrawing(canvas, canvasKit).then(() => {
+      surface!.flush();
+      surface!.delete();
+    });
   }, [canvasKit]);
   return <AutoCanvas canvasRef={canvasRef} />;
 }
@@ -70,8 +77,8 @@ export default function SkiaCanvasKit() {
     </CanvasKitProvider>
   );
 }
-
-function skiaBasicDrawing(canvas: Canvas, ck: CanvasKit) {
+async function skiaTextDrawing(canvas: Canvas, ck: CanvasKit, font: Font) {}
+async function skiaBasicDrawing(canvas: Canvas, ck: CanvasKit) {
   const path = new ck.Path();
   path.addCircle(100, 100, 50);
   const paint = new ck.Paint();
@@ -120,9 +127,51 @@ function skiaBasicDrawing(canvas: Canvas, ck: CanvasKit) {
     paint.setColor(ck.Color(0, 0, 255, 1));
     canvas.drawPath(result, paint);
   }
-}
 
-function findAreaOfCircle(radius: number) {
-  const area = Math.PI * radius * radius;
-  return area;
+  // {
+  //   //draw text
+  //   const fontArray = await loadGoogleFont("Roboto-Regular.ttf");
+  //   // const fontMgr = ck.FontMgr.FromData(fontArray);
+  //   const fontFace = ck.Typeface.MakeFreeTypeFaceFromData(fontArray);
+  //   console.log(fontFace);
+  //   const font = new ck.Font(fontFace, 20);
+  //   const paint = new ck.Paint();
+  //   paint.setAntiAlias(true);
+  //   paint.setStyle(ck.PaintStyle.Fill);
+  //   paint.setColor(ck.Color(0, 0, 255, 1));
+  //   canvas.drawText("Hello Skia", 300, 100, paint, font);
+  // }
+  //text with path
+  {
+    //draw text
+    const fontArray = await loadGoogleFont("Roboto-Regular.ttf");
+    const fontFace = ck.Typeface.MakeFreeTypeFaceFromData(fontArray);
+    const paint = new ck.Paint();
+    const font = new ck.Font(fontFace, 16);
+    paint.setAntiAlias(true);
+
+    let glyphs = [];
+    let positions = [];
+    for (let i = 0; i < 1000; ++i) {
+      glyphs.push(i);
+      positions.push((i % 16) * 16);
+      positions.push(Math.round(i / 16) * 16);
+    }
+    canvas.drawGlyphs(glyphs, positions, 16, 20, font, paint);
+  }
+
+  //paragraph
+  {
+    const fontArray = await loadGoogleFont("Roboto-Regular.ttf");
+    const fontFace = ck.Typeface.MakeFreeTypeFaceFromData(fontArray);
+    const font = new ck.Font(fontFace, 16);
+    const paint = new ck.Paint();
+    paint.setAntiAlias(true);
+    paint.setStyle(ck.PaintStyle.Fill);
+    paint.setColor(ck.Color(0, 0, 255, 1));
+    console.log("metrics", font.getMetrics())
+   
+    
+
+  }
 }

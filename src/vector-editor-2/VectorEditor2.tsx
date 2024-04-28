@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Drawing } from "./drawing";
 import { create } from "zustand";
 import { subscribeWithSelector } from "zustand/middleware";
@@ -7,6 +7,7 @@ import { CircleShape, RectShape, Shape } from "./Shape";
 import { immer } from "zustand/middleware/immer";
 import { useShallow } from "zustand/react/shallow";
 import { immerable, produce } from "immer";
+import { Color } from "../others/Color";
 
 function getShapeName(shape: Shape) {
   return shape.constructor.name;
@@ -30,6 +31,9 @@ function ShapeList() {
           className="p-1 hover:bg-orange-100"
           key={index}
           onClick={() => onShapeClick(shape)}
+          onDoubleClick={() => {
+            useEditorStore.getState().removeShape(shape.id);
+          }}
         >
           {getShapeName(shape) + shape.id}
         </div>
@@ -53,6 +57,22 @@ function NumInput({
     />
   );
 }
+function ColorInput({
+  color,
+  onChange,
+}: {
+  color: string;
+  onChange: (value: string) => void;
+}) {
+  return (
+    <input
+      className="w-5 h-5"
+      type="color"
+      value={color}
+      onChange={(e) => onChange((e.target as HTMLInputElement).value)}
+    />
+  );
+}
 function ShapeProperties({ shape }: { shape: Shape }) {
   return (
     <div>
@@ -64,7 +84,6 @@ function ShapeProperties({ shape }: { shape: Shape }) {
             useEditorStore.getState().updateShape(shape.id, (shape) => {
               shape.center.x = value;
             });
-            
           }}
         />
       </div>
@@ -75,6 +94,14 @@ function ShapeProperties({ shape }: { shape: Shape }) {
       <div>
         <strong>color:</strong>
         {shape.color.toString()}
+        <ColorInput
+          color={shape.color.toString()}
+          onChange={(value) => {
+            useEditorStore.getState().updateShape(shape.id, (shape) => {
+              shape.color = Color.fromHex(value);
+            });
+          }}
+        />
       </div>
       <div>
         <strong>id:</strong>
@@ -109,7 +136,6 @@ function PropertyPanel() {
   const _selectedShapeId = useEditorStore((state) => state.selectedShapeId);
   const shapes = useEditorStore((state) => state.shapes);
   const selectedShape = useEditorStore.getState().getSelectedShape();
-  console.log("selectedShape", selectedShape);
   return (
     <div className="w-full h-full bg-blue-200">
       <div>Properties</div>
@@ -150,8 +176,160 @@ function Editor() {
   );
 }
 export default function VectorEditor2() {
-  return <Editor />;
+  // return <Editor />;
   // return <ZustandTest />;
+  return <LongListUpdateTest />;
+  // return <RefTest />;
+}
+function useRefState<T>(initialState: T) {
+  const ref = useRef(initialState);
+  const [_, forceState] = useState(false);
+  const forceUpdate = () => forceState((prev) => !prev);
+  return [ref, forceUpdate] as const;
+}
+function RefItemView({ item }: { item: Item }) {
+  console.log("render item view");
+  return (
+    <div className="p-1 hover:bg-orange-200">
+      <div>
+        <strong>name:</strong>
+        {item.name}
+      </div>
+      <div>
+        <strong>id:</strong>
+        {item.id}
+      </div>
+      <div>
+        <strong>color:</strong>
+        {item.color}
+      </div>
+    </div>
+  );
+}
+function RefTest() {
+  const [numRef, forceUpdate] = useRefState<Item[]>([]);
+
+  useEffect(() => {
+    const id = setInterval(() => {
+      const item: Item = {
+        name: "item",
+        id: Date.now(),
+        color: "#ff0000",
+      };
+      numRef.current.push(item);
+      forceUpdate();
+    }, 1000);
+
+    return () => {
+      clearInterval(id);
+    };
+  }, []);
+  return (
+    <div>
+      {numRef.current.map((item, index) => (
+        <RefItemView
+          // onClick={() => {
+          //   numRef.current.splice(index, 1);
+          //   forceUpdate();
+          // }}
+          key={index}
+          item={item}
+        />
+      ))}
+    </div>
+  );
+}
+interface Item {
+  // name = "item";
+  // id = Date.now();
+  // color = "#ff0000";
+  name: string;
+  id: number;
+  color: string;
+}
+function ItemView({
+  item,
+  setColor,
+  setId,
+}: {
+  item: Item;
+  setColor?: (color: string) => void;
+  setId?: (id: number) => void;
+}) {
+  // console.log("render item view");
+  return (
+    <div className="p-1 hover:bg-orange-200">
+      <div>
+        <strong>name:</strong>
+        {item.name}
+      </div>
+      <div>
+        <strong>id:</strong>
+        <NumInput
+          value={item.id}
+          onChange={(value) => {
+            setId?.(value);
+          }}
+        />
+      </div>
+      <div>
+        <strong>color:</strong>
+        {item.color}
+        <ColorInput
+          color={item.color}
+          onChange={(value) => {
+            setColor?.(value);
+          }}
+        />
+      </div>
+    </div>
+  );
+}
+//create your forceUpdate hook
+function useForceUpdate() {
+  const [value, setValue] = useState(0); // integer state
+  return () => setValue(value + 1); // update state to force render
+  // A function that increment 👆🏻 the previous state like here
+  // is better than directly setting `setValue(value + 1)`
+}
+function LongListUpdateTest() {
+  const [itemsRef, _] = useRefState<Item[]>([]);
+  const forceUpdate = useForceUpdate();
+
+  useEffect(() => {
+    //random 100 item
+
+    for (let i = 1; i < 50; i++) {
+      const item: Item = {
+        name: "item",
+        id: Date.now()+i,
+        color: "#ff0000",
+      };
+      item.name = item.name + i;
+      itemsRef.current.push(item);
+    }
+    forceUpdate();
+  }, []);
+  const items = itemsRef.current;
+  // console.log("items ", items);
+  return (
+    <div className="w-full h-full">
+      {/* items */}
+      <div className=" w-[200px] h-full">
+        {itemsRef.current.map((item, index) => (
+          <ItemView
+            key={item.id}
+            item={item}
+            setColor={(color) => {
+              itemsRef.current[index].color = color;
+              forceUpdate();
+            }}
+            setId={(id) => {}}
+          />
+        ))}
+      </div>
+    </div>
+  );
 }
 
 interface BearState {
@@ -249,12 +427,11 @@ userStore.subscribe((state) => {
   console.log("user ", state.users);
 });
 setInterval(() => {
-  userStore.setState((state) => {
-    const user = state.users[0];
-    user.age++;
-    state.users[0] = user;
-  });
-
+  // userStore.setState((state) => {
+  //   const user = state.users[0];
+  //   user.age++;
+  //   state.users[0] = user;
+  // });
   // userStore.getState().updateNum(0, userStore.getState().nums[0] + 1);
 }, 1000);
 

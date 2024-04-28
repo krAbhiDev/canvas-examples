@@ -1,5 +1,7 @@
 import { Color } from "../others/Color";
 import { Render } from "../others/Render";
+import { randomRange, toInt } from "../others/utils";
+import { CircleShape } from "./Shape";
 import { useEditorStore } from "./state";
 
 export class Drawing {
@@ -45,6 +47,13 @@ export class Drawing {
       console.log("editor state changed");
       this.redraw();
     });
+    canvas.addEventListener("mousemove", (e) => {
+      useEditorStore.getState().updateShape(0, (shape) => {
+        if (shape instanceof CircleShape) {
+          shape.radius = e.clientX;
+        }
+      });
+    });
   }
   clearHtml() {
     this.canvasHolderDiv.innerHTML = "";
@@ -55,9 +64,10 @@ export class Drawing {
   protected onDraw() {
     if (!this._render) return;
     this._render.clear();
-    this.state.shapes.forEach((shape) => {
-      shape.draw(this._render!);
-    });
+    for (const shape of this.state.shapes) {
+      shape.draw(this._render);
+      break;
+    }
 
     //draw selected shape
   }
