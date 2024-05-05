@@ -45,6 +45,7 @@ abstract class Render {
   //pixels
 
   abstract makePath(): Path;
+  abstract makePathFromSVG(svg: string): Path;
   //   abstract makeImage(): Image;
   //   abstract makeMatrix(): Matrix;
 }
@@ -145,6 +146,7 @@ abstract class Path {
   abstract addOval(oval: Rect): void;
   abstract addRect(rect: Rect): void;
   abstract addRRect(rrect: RRect): void;
+  abstract addPolyline(points: Point[]): void;
 
   abstract close(): void;
   abstract copy(): Path;
@@ -179,6 +181,7 @@ abstract class Path {
     y3: number
   ): void;
 }
+
 abstract class Image {}
 abstract class Matrix {}
 

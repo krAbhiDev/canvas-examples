@@ -37,6 +37,17 @@ export default function AutoCanvas(props: AutoCanvasProps) {
       }
     };
     window.addEventListener("resize", resizeCallback);
+    //resize observer to parent
+    const resizeObserver = new ResizeObserver((entries) => {
+      const entry = entries[0];
+      const { width, height } = entry.contentRect;
+      canvas.width = width;
+      canvas.height = height;
+      if (props.onResize) {
+        props.onResize(width, height);
+      }
+    });
+    resizeObserver.observe(parent);
     canvas.addEventListener("mousemove", (e) => {
       if (props.onMouseMove) {
         const e2 = e as MouseEvent2;
@@ -48,6 +59,8 @@ export default function AutoCanvas(props: AutoCanvasProps) {
     });
     return () => {
       window.removeEventListener("resize", resizeCallback);
+      resizeObserver.unobserve(parent);
+      resizeObserver.disconnect();
     };
   }, []);
   return (

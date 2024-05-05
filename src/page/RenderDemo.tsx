@@ -84,8 +84,48 @@ function RenderCanvas() {
     render.drawPath(path, {
       color: Color.random(),
     });
+
     path.delete();
 
+    //svg path
+    const svgPath = render.makePathFromSVG(`
+    M 10,30
+       A 20,20 0,0,1 50,30
+       A 20,20 0,0,1 90,30
+       Q 90,60 50,90
+       Q 10,60 10,30 z
+    `);
+    svgPath.offset(600, 200);
+    render.drawPath(svgPath, {
+      color: Color.random(),
+    });
+
+    svgPath.offset(100, 100);
+
+    render.drawPath(svgPath, {
+      color: Color.random(),
+      style: "stroke",
+      strokeWidth: 10,
+      strokeJoin: "miter",
+      strokeCap: "butt",
+    });
+
+    //path polyLine
+    const polyPath = render.makePath();
+    //v
+    polyPath.addPolyline([
+      new Point(100, 100),
+      new Point(150, 150),
+      new Point(200, 100),
+    ])
+    polyPath.offset(700, 100);
+
+    render.drawPath(polyPath, {
+      color: Color.random(),
+      style: "stroke",
+      strokeWidth: 10,
+    });
+    
     render.flush();
   }
 
@@ -109,7 +149,7 @@ function RenderCanvas() {
 export default function RenderDemo() {
   return (
     <div className="w-full h-full fixed p-4">
-      <div className="w-full h-full">
+      <div className="w-full h-full  resize overflow-auto">
         <CanvasKitLoader>
           <RenderCanvas />
         </CanvasKitLoader>
