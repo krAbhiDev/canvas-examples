@@ -2,8 +2,7 @@
 
 import AutoCanvas from "../components/AutoCanvas";
 import { useEffect, useRef, useState } from "react";
-import InitCanvasKit, { Canvas, CanvasKit, Font } from "canvaskit-wasm";
-import CanvasKitInit from "canvaskit-wasm";
+import CanvasKitInit, { Canvas, CanvasKit, Font } from "canvaskit-wasm";
 import React from "react";
 type Ck = CanvasKit;
 //create CanvasKit context
@@ -148,6 +147,9 @@ async function skiaBasicDrawing(canvas: Canvas, ck: CanvasKit) {
     const fontFace = ck.Typeface.MakeFreeTypeFaceFromData(fontArray);
     const paint = new ck.Paint();
     const font = new ck.Font(fontFace, 16);
+
+    //get text bounds
+
     paint.setAntiAlias(true);
 
     let glyphs = [];
@@ -169,9 +171,6 @@ async function skiaBasicDrawing(canvas: Canvas, ck: CanvasKit) {
     paint.setAntiAlias(true);
     paint.setStyle(ck.PaintStyle.Fill);
     paint.setColor(ck.Color(0, 0, 255, 1));
-    console.log("metrics", font.getMetrics())
-   
-    
-
+    console.log("metrics", font.getMetrics());
   }
 }
