@@ -85,3 +85,4 @@ export class LineShape extends Shape {
     return new Rect(this.x, this.y, this.x2 - this.x, this.y2 - this.y);
   }
 }
+

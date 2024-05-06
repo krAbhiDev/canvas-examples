@@ -3,10 +3,11 @@
 import AutoCanvas from "../components/AutoCanvas";
 import { useCallback, useEffect, useRef, useState } from "react";
 import React from "react";
-import CanvasKitRender, { loadCanvasKit } from "../render/CanvasKitRender";
+import CanvasKitRender from "../render/CanvasKitRender";
 import CanvasKitLoader from "../render/CanvasKitLoader";
 import { Point, Rect } from "../render/math";
-import { Color, Render } from "../render/Render";
+import { Color, PathOp, Render } from "../render/Render";
+import { randomEnum } from "../others/utils";
 
 function RenderCanvas() {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -121,6 +122,25 @@ function RenderCanvas() {
     polyPath.offset(700, 100);
 
     render.drawPath(polyPath, {
+      color: Color.random(),
+      style: "stroke",
+      strokeWidth: 10,
+    });
+
+    //path op example of circle and rect
+    const circle = render.makePath();
+    circle.addCircle(0, 0, 50);
+
+    const rect = render.makePath();
+    rect.addRect(new Rect(0, 0, 100, 100));
+
+    const opPath=circle.copy();
+    const op=randomEnum(PathOp);
+    console.log({op})
+    opPath.op(rect,op);
+    opPath.offset(750, 150);
+
+    render.drawPath(opPath, {
       color: Color.random(),
       style: "stroke",
       strokeWidth: 10,

@@ -8,6 +8,7 @@ import {
   StrokeCap,
   StrokeJoin,
   FillType,
+  PathOp,
 } from "./Render";
 import { Point, Rect, RRect } from "./math";
 
@@ -93,6 +94,20 @@ class SkiaConverter {
         break;
     }
     return skiaPaint;
+  }
+  toPathOp(op: PathOp) {
+    switch (op) {
+      case PathOp.Difference:
+        return this.ck.PathOp.Difference;
+      case PathOp.Intersect:
+        return this.ck.PathOp.Intersect;
+      case PathOp.Union:
+        return this.ck.PathOp.Union;
+      case PathOp.XOR:
+        return this.ck.PathOp.XOR;
+      default:
+        throw new Error("Unknown PathOp");
+    }
   }
 }
 
@@ -299,6 +314,10 @@ export class CanvasKitPath extends Path {
   }
   simplify(): void {
     this.skiaPath.simplify();
+  }
+  op(path: Path, op: number): boolean {
+    const ckPath = path as CanvasKitPath;
+    return this.skiaPath.op(ckPath.skiaPath, this.cv.toPathOp(op));
   }
   moveTo(x: number, y: number): void {
     this.skiaPath.moveTo(x, y);

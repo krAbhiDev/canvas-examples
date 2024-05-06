@@ -137,7 +137,7 @@ enum PathOp {
   Intersect,
   Union,
   XOR,
-  ReverseDifference,
+  // ReverseDifference,
 }
 abstract class Path {
   protected constructor() {}
@@ -158,6 +158,7 @@ abstract class Path {
   abstract setFillType(fillType: FillType): void;
   abstract getFillType(): FillType;
   abstract simplify(): void;
+  abstract op(path: Path, op: PathOp):boolean;
 
   abstract delete(): void;
 
